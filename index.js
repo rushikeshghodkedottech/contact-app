@@ -35,6 +35,8 @@ app.post("/contacts", (req, res) => {
     return res.status(400).json({ message: "Name and phone are required." });
   }
 
+  console.log(`INSERT INTO contacts (name, phone) VALUES (${name}, ${phone})`);
+
   const query = "INSERT INTO contacts (name, phone) VALUES (?, ?)";
   db.query(query, [name, phone], (err, results) => {
     if (err) {
