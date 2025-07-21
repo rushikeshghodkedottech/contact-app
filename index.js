@@ -1,4 +1,3 @@
-// server.js
 import express from "express";
 import mysql from "mysql2";
 import dotenv from "dotenv";
@@ -11,6 +10,7 @@ app.use(express.json()); // to parse JSON bodies
 
 // Set up MySQL connection
 const db = mysql.createConnection({
+  port: process.env.DB_PORT,
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
@@ -57,7 +57,6 @@ app.get("/contacts", (req, res) => {
     }
 
     console.log("Results: ", results);
-    
 
     res.status(200).json(results);
   });
@@ -129,10 +128,10 @@ app.delete("/contacts/:id", (req, res) => {
 });
 
 app.get("/health-check", (req, res) => {
-    return res.status(200).json({
-        message: "API is up and running."
-    });
-})
+  return res.status(200).json({
+    message: "API is up and running.",
+  });
+});
 
 // Set up server to listen on a port
 const PORT = process.env.PORT || 3000;
