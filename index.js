@@ -78,6 +78,8 @@ app.get("/contacts/:id", (req, res) => {
       return res.status(404).json({ message: "Contact not found." });
     }
 
+    console.log("Results (One Contact): ", results[0]);
+
     res.status(200).json(results[0]);
   });
 });
