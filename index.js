@@ -55,6 +55,10 @@ app.get("/contacts", (req, res) => {
       console.error("Error fetching contacts:", err);
       return res.status(500).json({ message: "Error fetching contacts." });
     }
+
+    console.log("Results: ", results);
+    
+
     res.status(200).json(results);
   });
 });
