@@ -42,33 +42,51 @@ function App() {
   return (
     <div className="app">
       <h1>Contact Manager</h1>
-
+      
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Name"
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+          required
         />
         <input
           type="text"
           placeholder="Phone"
           value={formData.phone}
           onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+          required
         />
         <button type="submit">Add Contact</button>
       </form>
 
-      <div className="contacts-list">
-        {contacts.map((contact) => (
-          <div key={contact.id} className="contact-card">
-            <div>
-              <h3>{contact.name}</h3>
-              <p>{contact.phone}</p>
-            </div>
-            <button onClick={() => handleDelete(contact.id)}>Delete</button>
-          </div>
-        ))}
+      <div className="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Phone</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {contacts.map((contact) => (
+              <tr key={contact.id}>
+                <td>{contact.name}</td>
+                <td>{contact.phone}</td>
+                <td>
+                  <button 
+                    onClick={() => handleDelete(contact.id)}
+                    className="delete-btn"
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   )
