@@ -1,12 +1,14 @@
 import express from "express";
 import mysql from "mysql2";
 import dotenv from "dotenv";
+import cors from "cors";
 
 // Load environment variables from .env file
 dotenv.config();
 
 const app = express();
 app.use(express.json()); // to parse JSON bodies
+app.use(cors()); // Add this line
 
 // Set up MySQL connection
 const db = mysql.createConnection({
