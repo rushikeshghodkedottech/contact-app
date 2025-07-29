@@ -17,3 +17,7 @@ COPY --from=build-stage /app/dist /usr/share/nginx/html
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
+
+
+# multi-platform docker image
+# docker buildx build --platform linux/amd64,linux/arm64 .
