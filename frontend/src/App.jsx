@@ -3,6 +3,8 @@ import axios from 'axios'
 import './App.css'
 
 function App() {
+
+  const API_URL = import.meta.env.API_URL || 'http://localhost:3000/contacts'
   const [contacts, setContacts] = useState([])
   const [formData, setFormData] = useState({ name: '', phone: '' })
 
@@ -12,7 +14,7 @@ function App() {
 
   const fetchContacts = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/contacts')
+      const response = await axios.get(`${API_URL}`)
       setContacts(response.data)
     } catch (error) {
       console.error('Error fetching contacts:', error)
@@ -22,7 +24,7 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await axios.post('http://localhost:3000/contacts', formData)
+      await axios.post(`${API_URL}`, formData)
       setFormData({ name: '', phone: '' })
       fetchContacts()
     } catch (error) {
@@ -32,7 +34,7 @@ function App() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/contacts/${id}`)
+      await axios.delete(`${API_URL}/${id}`)
       fetchContacts()
     } catch (error) {
       console.error('Error deleting contact:', error)
@@ -42,7 +44,7 @@ function App() {
   return (
     <div className="app">
       <h1>Contact Manager</h1>
-      
+
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -76,7 +78,7 @@ function App() {
                 <td>{contact.name}</td>
                 <td>{contact.phone}</td>
                 <td>
-                  <button 
+                  <button
                     onClick={() => handleDelete(contact.id)}
                     className="delete-btn"
                   >

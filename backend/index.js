@@ -129,7 +129,7 @@ app.delete("/contacts/:id", (req, res) => {
   });
 });
 
-app.get("/health-check", (req, res) => {
+app.get("/health", (req, res) => {
   return res.status(200).json({
     message: "API is up and running.",
   });
