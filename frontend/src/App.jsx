@@ -3,10 +3,14 @@ import axios from 'axios'
 import './App.css'
 
 function App() {
+  const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:3000/contacts'
 
-  const API_URL = import.meta.env.API_URL || 'http://localhost:3000/contacts'
+  console.log('BASE_URL:', BASE_URL)
+
   const [contacts, setContacts] = useState([])
   const [formData, setFormData] = useState({ name: '', phone: '' })
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
   useEffect(() => {
     fetchContacts()
@@ -14,17 +18,24 @@ function App() {
 
   const fetchContacts = async () => {
     try {
-      const response = await axios.get(`${API_URL}`)
-      setContacts(response.data)
+      setLoading(true)
+      setError(null)
+      const response = await axios.get(BASE_URL)
+      // Ensure we're setting an array
+      setContacts(Array.isArray(response.data) ? response.data : [])
     } catch (error) {
       console.error('Error fetching contacts:', error)
+      setError('Failed to fetch contacts')
+      setContacts([])
+    } finally {
+      setLoading(false)
     }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      await axios.post(`${API_URL}`, formData)
+      await axios.post(`${BASE_URL}`, formData)
       setFormData({ name: '', phone: '' })
       fetchContacts()
     } catch (error) {
@@ -34,7 +45,7 @@ function App() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`${API_URL}/${id}`)
+      await axios.delete(`${BASE_URL}/${id}`)
       fetchContacts()
     } catch (error) {
       console.error('Error deleting contact:', error)
@@ -44,6 +55,7 @@ function App() {
   return (
     <div className="app">
       <h1>Contact Manager</h1>
+      {error && <div className="error-message">{error}</div>}
 
       <form onSubmit={handleSubmit}>
         <input
@@ -73,20 +85,30 @@ function App() {
             </tr>
           </thead>
           <tbody>
-            {contacts.map((contact) => (
-              <tr key={contact.id}>
-                <td>{contact.name}</td>
-                <td>{contact.phone}</td>
-                <td>
-                  <button
-                    onClick={() => handleDelete(contact.id)}
-                    className="delete-btn"
-                  >
-                    Delete
-                  </button>
-                </td>
+            {loading ? (
+              <tr>
+                <td colSpan="3">Loading contacts...</td>
               </tr>
-            ))}
+            ) : contacts.length === 0 ? (
+              <tr>
+                <td colSpan="3">No contacts found</td>
+              </tr>
+            ) : (
+              contacts.map((contact) => (
+                <tr key={contact.id}>
+                  <td>{contact.name}</td>
+                  <td>{contact.phone}</td>
+                  <td>
+                    <button
+                      onClick={() => handleDelete(contact.id)}
+                      className="delete-btn"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
