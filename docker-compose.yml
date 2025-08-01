@@ -15,7 +15,7 @@ services:
       - "3000:3000"
     environment:
       DB_PORT: 3306
-      DB_HOST: database
+      DB_HOST: mysql_db
       DB_USER: root
       DB_PASSWORD: rootpass
       DB_NAME: contacts_db
