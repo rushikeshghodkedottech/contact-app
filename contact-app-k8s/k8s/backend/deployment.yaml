@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contact-app-backend
+  labels:
+    app: contact-app-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: contact-app-backend
+  template:
+    metadata:
+      labels:
+        app: contact-app-backend
+    spec:
+      containers:
+      - name: backend
+        image: rushikeshghodkedottech/contact-app-backend:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: DB_HOST
+          value: "contacts_db"
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: username
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: password
+        - name: DB_NAME
+          value: "contact_db"

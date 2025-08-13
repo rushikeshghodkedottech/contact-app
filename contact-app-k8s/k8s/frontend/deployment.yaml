@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contact-app-frontend
+  labels:
+    app: contact-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: contact-app
+      tier: frontend
+  template:
+    metadata:
+      labels:
+        app: contact-app
+        tier: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: your-dockerhub-username/contact-app-frontend:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: BACKEND_URL
+          value: "http://contact-app-backend:3000"

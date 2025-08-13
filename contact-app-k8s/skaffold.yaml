@@ -1,0 +1,18 @@
+Sure, here's the contents for the file `/contact-app-k8s/contact-app-k8s/skaffold.yaml`:
+
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: contact-app
+build:
+  artifacts:
+    - image: contact-app-frontend
+      context: k8s/frontend
+    - image: contact-app-backend
+      context: k8s/backend
+    - image: mysql
+      context: k8s/database
+deploy:
+  kubectl:
+    manifests:
+      - k8s/**/*.yaml
