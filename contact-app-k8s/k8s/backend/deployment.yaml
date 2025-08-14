@@ -5,7 +5,6 @@ metadata:
   labels:
     app: contact-app-backend
 spec:
-  replicas: 3
   selector:
     matchLabels:
       app: contact-app-backend
@@ -21,18 +20,18 @@ spec:
         - containerPort: 3000
         env:
         - name: DB_HOST
-          value: "contacts_db"
+          value: "mysql-service"
         - name: DB_PORT
           value: "3306"
         - name: DB_USER
           valueFrom:
             secretKeyRef:
-              name: db-secret
-              key: username
+              name: mysql-secret
+              key: user
         - name: DB_PASSWORD
           valueFrom:
             secretKeyRef:
-              name: db-secret
+              name: mysql-secret
               key: password
         - name: DB_NAME
-          value: "contact_db"
+          value: "contacts_db"

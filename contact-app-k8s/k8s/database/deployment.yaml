@@ -2,7 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mysql-deployment
-  namespace: contact-app
   labels:
     app: mysql
 spec:
@@ -18,31 +17,12 @@ spec:
       containers:
       - name: mysql
         image: mysql:8.0
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
         env:
         - name: MYSQL_ROOT_PASSWORD
           valueFrom:
             secretKeyRef:
               name: mysql-secret
               key: root-password
-        - name: MYSQL_DATABASE
-          value: "contacts_db"
-        - name: MYSQL_USER
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: user
-        - name: MYSQL_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: mysql-secret
-              key: password
         ports:
         - containerPort: 3306
         volumeMounts:
